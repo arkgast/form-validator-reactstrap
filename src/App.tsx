@@ -1,48 +1,29 @@
 import React, { Fragment, useState } from 'react';
 
-interface IInputProps {
-  name: string,
-  value?: string,
-  error?: string,
-  onChange: () => void
-}
+import Form from './components/Form'
+import Input from './components/Input'
 
-const Input: React.SFC<IInputProps> = ({ name, value, error }) => (
-  <Fragment>
-    <input name={name} value={value} />
-    {error && <span>{error}</span>}
-  </Fragment>
-)
-
-interface IFormProps {
-  children: any
-}
-
-const Form: React.SFC<IFormProps> = ({ children }) => {
-  const [error, setError] = useState('')
-
-  const handleClick = () => {
-    setError('Input has error')
+const App = () => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(event.target.name)
   }
 
   return (
-    <form>
-      {React.Children.map(children, (child) => {
-        return React.cloneElement(child, {
-          error
-        })
-      })}
-      <button type='button' onClick={handleClick}>Set error</button>
-    </form>
-  )
-}
-
-const App = () => {
-  const handleChange = () => {}
-
-  return (
     <Form>
-      <Input name='email' value='' onChange={handleChange} />
+      <Input
+        name='email'
+        value=''
+        validators={['isEmail', 'isRequired']}
+        errorMessages={['Should be an email', 'Should has a value']}
+        onChange={handleChange}
+      />
+      <Input
+        name='phone'
+        value=''
+        validators={['isNumber', 'isRequired']}
+        errorMessages={['Should be a number', 'Should has a value']}
+        onChange={handleChange}
+      />
     </Form>
   )
 }
