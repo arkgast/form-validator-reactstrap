@@ -4,12 +4,19 @@ import Form from './components/Form'
 import Input from './components/Input'
 
 const App = () => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    console.log('<=== Form Event')
+  }
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.name)
+    console.log('<=== Input Event')
+    const { name, value } = event.target
+    console.log(name, value)
   }
 
   return (
-    <Form>
+    <Form onSubmit={handleSubmit}>
       <Input
         name='email'
         value=''
@@ -24,6 +31,7 @@ const App = () => {
         errorMessages={['Should be a number', 'Should has a value']}
         onChange={handleChange}
       />
+      <button>Submit</button>
     </Form>
   )
 }

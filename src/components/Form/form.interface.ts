@@ -1,4 +1,7 @@
+import { FormEvent } from "react";
+
 export interface IFormProps {
+  onSubmit: (event: FormEvent<HTMLFormElement>) => void,
   children: any
 }
 

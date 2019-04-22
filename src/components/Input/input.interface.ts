@@ -1,4 +1,4 @@
-import React from 'react'
+import { ChangeEvent } from 'react'
 
 export default interface IInputProps {
   name: string,
@@ -6,6 +6,6 @@ export default interface IInputProps {
   error?: string,
   validators: Array<string>,
   errorMessages: Array<string>,
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+  onChange: (event: ChangeEvent<HTMLInputElement>) => void
 }
 
