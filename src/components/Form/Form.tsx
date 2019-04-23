@@ -1,34 +1,56 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 
 import { IFormProps } from './form.interface'
+import { validator, priority } from '../validation-rules'
 import context from '../context'
+
+interface IField {
+  name: string
+  value?: string | number
+  validators?: Array<string>
+  errorMessages?: Array<string>
+  errorMsgIdx?: number
+  [key: string]: any
+}
 
 const Form: React.SFC<IFormProps> = ({ onSubmit, children }) => {
   const [fields, setField] = useState<any>({})
 
-  const callAll = (...fns: Array<Function>) =>
-    (...args: Array<any>) => fns.forEach(fn => fn && fn(...args))
-
-  const updateField = (newField: any) => {
-    const { validators, errorMessages, onChange } = newField
-    setField((currentField: any) => ({
-      ...currentField,
-      [newField.name]: {
-        errorMessages,
-        validators,
-        onChange: callAll(handleChange, onChange)
+  const updateField = (field: IField) => {
+    setField((currentField: IField) => {
+      const newField = {
+        ...currentField[field.name],
+        ...field
       }
-    }))
-  } 
+      return {
+        ...currentField,
+        [newField.name]: newField
+      }
+    })
+  }
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('<== FORM')
-    console.log(fields)
+  const validate = () => {
+    const fieldNames = Object.keys(fields)
+    fieldNames.forEach(fieldName => {
+      const { validators, value, error } = fields[fieldName]
+      const allAreValid = validators.every((validatorKey: any) => {
+        const validationSuccess = validator[validatorKey](value)
+        const errorMsgIdx = validators.indexOf(validatorKey)
+        if (!validationSuccess) {
+          updateField({ name: fieldName, errorMsgIdx })
+        }
+        return validationSuccess
+      })
+
+      if (allAreValid) {
+        updateField({ name: fieldName, errorMsgIdx: -1 })
+      }
+    })
   }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     onSubmit(event)
-    console.log(fields)
+    validate()
   }
 
   return (
