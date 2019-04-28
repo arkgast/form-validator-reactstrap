@@ -1,5 +1,5 @@
 import React, { Fragment, useContext, useEffect } from 'react'
-import { FormGroup, Label, Input } from 'reactstrap'
+import { FormGroup, FormFeedback, Label, Input } from 'reactstrap'
 
 import IInputProps from './input.interface'
 import context from '../context'
@@ -45,14 +45,15 @@ const CInput: React.SFC<IInputProps> = ({
   return (
     <Fragment>
       <FormGroup>
-        <Label>{label}</Label>
+        <Label className={ !!error ? 'text-danger' : '' }>{label}</Label>
         <Input
+          invalid={!!error}
           name={name}
           value={value}
           onChange={handleChange}
           {...rest}
         />
-        {error && <span>{error}</span>}
+        <FormFeedback>{error}</FormFeedback>
       </FormGroup>
     </Fragment>
   )
