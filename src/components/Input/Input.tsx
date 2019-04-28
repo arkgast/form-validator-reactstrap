@@ -1,4 +1,5 @@
 import React, { Fragment, useContext, useEffect } from 'react'
+import { FormGroup, Label, Input } from 'reactstrap'
 
 import IInputProps from './input.interface'
 import context from '../context'
@@ -13,9 +14,10 @@ const fieldFactory = (field: any) => {
   }
 }
 
-const Input: React.SFC<IInputProps> = ({
+const CInput: React.SFC<IInputProps> = ({
   name,
   value,
+  label,
   validators,
   errorMessages,
   onChange,
@@ -42,15 +44,18 @@ const Input: React.SFC<IInputProps> = ({
 
   return (
     <Fragment>
-      <input
-        name={name}
-        value={value}
-        onChange={handleChange}
-        {...rest}
-      />
-      {error && <span>{error}</span>}
+      <FormGroup>
+        <Label>{label}</Label>
+        <Input
+          name={name}
+          value={value}
+          onChange={handleChange}
+          {...rest}
+        />
+        {error && <span>{error}</span>}
+      </FormGroup>
     </Fragment>
   )
 }
 
-export default Input
+export default CInput

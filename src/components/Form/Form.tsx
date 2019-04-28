@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Form } from 'reactstrap'
 
 import { IFormProps } from './form.interface'
 import { validator, priority } from '../validation-rules'
@@ -13,7 +14,7 @@ interface IField {
   [key: string]: any
 }
 
-const Form: React.SFC<IFormProps> = ({ onSubmit, children }) => {
+const CForm: React.SFC<IFormProps> = ({ onSubmit, children }) => {
   const [fields, setField] = useState<any>({})
 
   const updateField = (field: IField) => {
@@ -62,4 +63,4 @@ const Form: React.SFC<IFormProps> = ({ onSubmit, children }) => {
   )
 }
 
-export default Form
+export default CForm
